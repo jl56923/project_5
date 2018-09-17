@@ -1,5 +1,6 @@
 import itertools
 import math
+import pandas as pd
 import numpy as np
 import warnings
 from sklearn.metrics import mean_squared_error
@@ -145,3 +146,31 @@ def make_all_possible_param_dictionaries(param_choices):
         master_list_of_dictionaries.append(temp_dict)
         
     return master_list_of_dictionaries
+
+def max_variable_in_exog_df(var, exog_df, train_fraction):
+    
+    max_value_for_var = {
+        'obesity_prevalence': 1,
+        'diabetes_prevalence': 1,
+        'high_cholesterol': 1,
+        'exercise': 1,
+        'hypertension': 1,
+        'general_health': 1,
+        'mental_health': 30,
+        'coverage': 1,
+        'income': 5,
+        'smoker': 1,
+        'med_cost': 1,
+        'gender': 1
+    }
+    
+    time_series_length = exog_df.shape[0]
+    
+    exog_series_train = exog_df[0:math.ceil(train_fraction*time_series_length)]
+    exog_series_test = exog_df[math.ceil(train_fraction*time_series_length):]
+    
+    exog_series_test[var] = max_value_for_var[var]
+    
+    exog_maxed_var_df = pd.concat([exog_series_train, exog_series_test])
+    
+    return exog_maxed_var_df

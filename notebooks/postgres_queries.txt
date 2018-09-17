@@ -1,4 +1,0 @@
-Queries to create csv output files.
-
-\COPY (SELECT xstate, diabete3, xllcpwt FROM brfss_2014) TO '/home/ubuntu/brfss/diabetes_llcpwt.csv' WITH CSV DELIMITER ',';
-
